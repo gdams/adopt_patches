@@ -12,7 +12,7 @@ index 4ee9cdd193..1ab440e888 100644
    )
  
 diff --git a/common/autoconf/flags.m4 b/common/autoconf/flags.m4
-index 09b79bbb08..04c6b0eae3 100644
+index 09b79bbb08..5be203fe9d 100644
 --- a/common/autoconf/flags.m4
 +++ b/common/autoconf/flags.m4
 @@ -159,6 +159,26 @@ AC_DEFUN_ONCE([FLAGS_SETUP_COMPILER_FLAGS_FOR_LIBS],
@@ -136,7 +136,7 @@ index 09b79bbb08..04c6b0eae3 100644
  
      if test "x$TOOLCHAIN_TYPE" = xsolstudio; then
 diff --git a/common/autoconf/generated-configure.sh b/common/autoconf/generated-configure.sh
-index 3f69c91f58..0f81975f79 100644
+index 0903e2a4d0..376ec3dbc9 100644
 --- a/common/autoconf/generated-configure.sh
 +++ b/common/autoconf/generated-configure.sh
 @@ -1880,8 +1880,8 @@ Optional Packages:
@@ -315,7 +315,7 @@ index 3f69c91f58..0f81975f79 100644
  
  
 diff --git a/common/autoconf/libraries.m4 b/common/autoconf/libraries.m4
-index 6d803f9b1c..f9faeca549 100644
+index 6d803f9b1c..933ba9832e 100644
 --- a/common/autoconf/libraries.m4
 +++ b/common/autoconf/libraries.m4
 @@ -1047,8 +1047,12 @@ AC_DEFUN_ONCE([LIB_SETUP_STATIC_LINK_LIBSTDCPP],
@@ -407,6 +407,32 @@ index b5860bfd8d..5cfb899572 100644
  # DEBUG_BINARIES overrides everything, use full -g debug information
  ifeq ($(DEBUG_BINARIES), true)
    JSIG_DEBUG_CFLAGS = -g
+diff --git a/hotspot/src/cpu/x86/vm/c1_LIRGenerator_x86.cpp b/hotspot/src/cpu/x86/vm/c1_LIRGenerator_x86.cpp
+index 7f6b1d60ea..5eacb6b54d 100644
+--- a/hotspot/src/cpu/x86/vm/c1_LIRGenerator_x86.cpp
++++ b/hotspot/src/cpu/x86/vm/c1_LIRGenerator_x86.cpp
+@@ -233,8 +233,8 @@ void LIRGenerator::cmp_reg_mem(LIR_Condition condition, LIR_Opr reg, LIR_Opr bas
+ }
+ 
+ 
+-bool LIRGenerator::strength_reduce_multiply(LIR_Opr left, int c, LIR_Opr result, LIR_Opr tmp) {
+-  if (tmp->is_valid()) {
++bool LIRGenerator::strength_reduce_multiply(LIR_Opr left, jint c, LIR_Opr result, LIR_Opr tmp) {
++  if (tmp->is_valid() && c > 0 && c < max_jint) {
+     if (is_power_of_2(c + 1)) {
+       __ move(left, tmp);
+       __ shift_left(left, log2_jint(c + 1), left);
+@@ -602,8 +602,8 @@ void LIRGenerator::do_ArithmeticOp_Int(ArithmeticOp* x) {
+       bool use_constant = false;
+       bool use_tmp = false;
+       if (right_arg->is_constant()) {
+-        int iconst = right_arg->get_jint_constant();
+-        if (iconst > 0) {
++        jint iconst = right_arg->get_jint_constant();
++        if (iconst > 0 && iconst < max_jint) {
+           if (is_power_of_2(iconst)) {
+             use_constant = true;
+           } else if (is_power_of_2(iconst - 1) || is_power_of_2(iconst + 1)) {
 diff --git a/hotspot/src/os/aix/vm/decoder_aix.hpp b/hotspot/src/os/aix/vm/decoder_aix.hpp
 index ac234c1ab0..dca2dad3eb 100644
 --- a/hotspot/src/os/aix/vm/decoder_aix.hpp
@@ -446,6 +472,38 @@ index 731b3a3f5d..533425d6d4 100644
  
    bool can_decode_C_frame_in_vm() const;
    bool demangle(const char* symbol, char *buf, int buflen);
+diff --git a/hotspot/src/share/vm/c1/c1_LIRGenerator.cpp b/hotspot/src/share/vm/c1/c1_LIRGenerator.cpp
+index 21cd08da9e..126f39942b 100644
+--- a/hotspot/src/share/vm/c1/c1_LIRGenerator.cpp
++++ b/hotspot/src/share/vm/c1/c1_LIRGenerator.cpp
+@@ -539,11 +539,11 @@ void LIRGenerator::arithmetic_op(Bytecodes::Code code, LIR_Opr result, LIR_Opr l
+ 
+     case Bytecodes::_imul:
+       {
+-        bool    did_strength_reduce = false;
++        bool did_strength_reduce = false;
+ 
+         if (right->is_constant()) {
+-          int c = right->as_jint();
+-          if (is_power_of_2(c)) {
++          jint c = right->as_jint();
++          if (c > 0 && is_power_of_2(c)) {
+             // do not need tmp here
+             __ shift_left(left_op, exact_log2(c), result_op);
+             did_strength_reduce = true;
+diff --git a/hotspot/src/share/vm/c1/c1_LIRGenerator.hpp b/hotspot/src/share/vm/c1/c1_LIRGenerator.hpp
+index 8312a4bb6f..1a749eae2a 100644
+--- a/hotspot/src/share/vm/c1/c1_LIRGenerator.hpp
++++ b/hotspot/src/share/vm/c1/c1_LIRGenerator.hpp
+@@ -308,7 +308,7 @@ class LIRGenerator: public InstructionVisitor, public BlockClosure {
+   // is_strictfp is only needed for mul and div (and only generates different code on i486)
+   void arithmetic_op(Bytecodes::Code code, LIR_Opr result, LIR_Opr left, LIR_Opr right, bool is_strictfp, LIR_Opr tmp, CodeEmitInfo* info = NULL);
+   // machine dependent.  returns true if it emitted code for the multiply
+-  bool strength_reduce_multiply(LIR_Opr left, int constant, LIR_Opr result, LIR_Opr tmp);
++  bool strength_reduce_multiply(LIR_Opr left, jint constant, LIR_Opr result, LIR_Opr tmp);
+ 
+   void store_stack_parameter (LIR_Opr opr, ByteSize offset_from_sp_in_bytes);
+ 
 diff --git a/hotspot/src/share/vm/classfile/classLoader.hpp b/hotspot/src/share/vm/classfile/classLoader.hpp
 index 27f5068f70..bb9584e7e5 100644
 --- a/hotspot/src/share/vm/classfile/classLoader.hpp
