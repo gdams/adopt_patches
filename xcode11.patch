@@ -12,7 +12,7 @@ index 4ee9cdd193..1ab440e888 100644
    )
  
 diff --git a/common/autoconf/flags.m4 b/common/autoconf/flags.m4
-index 09b79bbb08..5be203fe9d 100644
+index fe0d9a436d..f2cf7d4a23 100644
 --- a/common/autoconf/flags.m4
 +++ b/common/autoconf/flags.m4
 @@ -159,6 +159,26 @@ AC_DEFUN_ONCE([FLAGS_SETUP_COMPILER_FLAGS_FOR_LIBS],
@@ -88,7 +88,7 @@ index 09b79bbb08..5be203fe9d 100644
      elif test "x$TOOLCHAIN_TYPE" = xxlc; then
        C_O_FLAG_HIGHEST="-O3"
        C_O_FLAG_HI="-O3 -qstrict"
-@@ -626,6 +671,22 @@ AC_DEFUN_ONCE([FLAGS_SETUP_COMPILER_FLAGS_FOR_JDK],
+@@ -636,6 +681,22 @@ AC_DEFUN_ONCE([FLAGS_SETUP_COMPILER_FLAGS_FOR_JDK],
        MACOSX_VERSION_MIN=10.7.0
        AC_SUBST(MACOSX_VERSION_MIN)
      
@@ -111,7 +111,7 @@ index 09b79bbb08..5be203fe9d 100644
        # The macro takes the version with no dots, ex: 1070
        # Let the flags variables get resolved in make for easier override on make
        # command line.
-@@ -699,6 +760,23 @@ AC_DEFUN_ONCE([FLAGS_SETUP_COMPILER_FLAGS_FOR_JDK],
+@@ -709,6 +770,23 @@ AC_DEFUN_ONCE([FLAGS_SETUP_COMPILER_FLAGS_FOR_JDK],
            LDFLAGS_JDK="${LDFLAGS_JDK} -Xlinker -O1"
          fi
        fi
@@ -136,10 +136,10 @@ index 09b79bbb08..5be203fe9d 100644
  
      if test "x$TOOLCHAIN_TYPE" = xsolstudio; then
 diff --git a/common/autoconf/generated-configure.sh b/common/autoconf/generated-configure.sh
-index 0903e2a4d0..376ec3dbc9 100644
+index 20f52aaffb..90803eb863 100644
 --- a/common/autoconf/generated-configure.sh
 +++ b/common/autoconf/generated-configure.sh
-@@ -1880,8 +1880,8 @@ Optional Packages:
+@@ -1895,8 +1895,8 @@ Optional Packages:
    --with-toolchain-path   prepend these directories when searching for
                            toolchain binaries (compilers etc)
    --with-extra-path       prepend these directories to the default path
@@ -150,7 +150,7 @@ index 0903e2a4d0..376ec3dbc9 100644
    --with-conf-name        use this as the name of the configuration [generated
                            from important configuration options]
    --with-builddeps-conf   use this configuration file for the builddeps
-@@ -13991,6 +13991,8 @@ $as_echo "$COMPILE_TYPE" >&6; }
+@@ -14008,6 +14008,8 @@ $as_echo "$COMPILE_TYPE" >&6; }
      elif test "x$OPENJDK_TARGET_CPU_ARCH" = xx86; then
        OPENJDK_TARGET_CPU_JLI_CFLAGS="$OPENJDK_TARGET_CPU_JLI_CFLAGS -DLIBARCH32NAME='\"i386\"' -DLIBARCH64NAME='\"amd64\"'"
      fi
@@ -159,7 +159,7 @@ index 0903e2a4d0..376ec3dbc9 100644
    fi
  
  
-@@ -26718,7 +26720,7 @@ $as_echo "$as_me: or run \"bash.exe -l\" from a VS command prompt and then run c
+@@ -26749,7 +26751,7 @@ $as_echo "$as_me: or run \"bash.exe -l\" from a VS command prompt and then run c
  $as_echo_n "checking Determining if we need to set DEVELOPER_DIR... " >&6; }
      if test -n "$DEVELOPER_DIR"; then
        if test ! -d "$DEVELOPER_DIR"; then
@@ -168,7 +168,7 @@ index 0903e2a4d0..376ec3dbc9 100644
        fi
        if test ! -f "$DEVELOPER_DIR"/usr/bin/xcodebuild; then
          as_fn_error $? "Xcode Developer path is not valid: $DEVELOPER_DIR, it must point to Contents/Developer inside an Xcode application bundle" "$LINENO" 5
-@@ -26781,8 +26783,8 @@ fi
+@@ -26812,8 +26814,8 @@ fi
      # Fail-fast: verify we're building on Xcode 4, we cannot build with Xcode 5 or later
      XCODE_VERSION=`$XCODEBUILD -version | grep '^Xcode ' | sed 's/Xcode //'`
      XC_VERSION_PARTS=( ${XCODE_VERSION//./ } )
@@ -179,7 +179,7 @@ index 0903e2a4d0..376ec3dbc9 100644
      fi
  
      # Some versions of Xcode 5 command line tools install gcc and g++ as symlinks to
-@@ -41238,6 +41240,26 @@ $as_echo "$ac_cv_c_bigendian" >&6; }
+@@ -41269,6 +41271,26 @@ $as_echo "$ac_cv_c_bigendian" >&6; }
      C_FLAG_REORDER=''
      CXX_FLAG_REORDER=''
  
@@ -206,7 +206,7 @@ index 0903e2a4d0..376ec3dbc9 100644
      if test "x$OPENJDK_TARGET_OS" = xmacosx; then
        # Linking is different on MacOSX
        SHARED_LIBRARY_FLAGS="-dynamiclib -compatibility_version 1.0.0 -current_version 1.0.0 $PICFLAG"
-@@ -41314,6 +41336,8 @@ $as_echo "$ac_cv_c_bigendian" >&6; }
+@@ -41345,6 +41367,8 @@ $as_echo "$ac_cv_c_bigendian" >&6; }
    # Generate make dependency files
    if test "x$TOOLCHAIN_TYPE" = xgcc; then
      C_FLAG_DEPS="-MMD -MF"
@@ -215,7 +215,7 @@ index 0903e2a4d0..376ec3dbc9 100644
    elif test "x$TOOLCHAIN_TYPE" = xsolstudio; then
      C_FLAG_DEPS="-xMMD -xMF"
    elif test "x$TOOLCHAIN_TYPE" = xxlc; then
-@@ -41338,6 +41362,15 @@ $as_echo "$ac_cv_c_bigendian" >&6; }
+@@ -41369,6 +41393,15 @@ $as_echo "$ac_cv_c_bigendian" >&6; }
        CXXFLAGS_DEBUG_SYMBOLS="-g"
      fi
      ASFLAGS_DEBUG_SYMBOLS="-g"
@@ -231,7 +231,7 @@ index 0903e2a4d0..376ec3dbc9 100644
    elif test "x$TOOLCHAIN_TYPE" = xsolstudio; then
      CFLAGS_DEBUG_SYMBOLS="-g -xs"
      CXXFLAGS_DEBUG_SYMBOLS="-g0 -xs"
-@@ -41394,6 +41427,20 @@ $as_echo "$ac_cv_c_bigendian" >&6; }
+@@ -41425,6 +41458,20 @@ $as_echo "$ac_cv_c_bigendian" >&6; }
          C_O_FLAG_NORM="-O2"
          C_O_FLAG_NONE="-O0"
        fi
@@ -252,7 +252,7 @@ index 0903e2a4d0..376ec3dbc9 100644
      elif test "x$TOOLCHAIN_TYPE" = xxlc; then
        C_O_FLAG_HIGHEST="-O3"
        C_O_FLAG_HI="-O3 -qstrict"
-@@ -42050,6 +42097,22 @@ $as_echo "$supports" >&6; }
+@@ -42096,6 +42143,22 @@ $as_echo "$supports" >&6; }
        MACOSX_VERSION_MIN=10.7.0
  
  
@@ -275,7 +275,7 @@ index 0903e2a4d0..376ec3dbc9 100644
        # The macro takes the version with no dots, ex: 1070
        # Let the flags variables get resolved in make for easier override on make
        # command line.
-@@ -42123,6 +42186,23 @@ $as_echo "$supports" >&6; }
+@@ -42169,6 +42232,23 @@ $as_echo "$supports" >&6; }
            LDFLAGS_JDK="${LDFLAGS_JDK} -Xlinker -O1"
          fi
        fi
@@ -299,7 +299,7 @@ index 0903e2a4d0..376ec3dbc9 100644
      fi
  
      if test "x$TOOLCHAIN_TYPE" = xsolstudio; then
-@@ -48774,8 +48854,12 @@ fi
+@@ -48820,8 +48900,12 @@ fi
    fi
  
    # TODO better (platform agnostic) test
@@ -371,10 +371,23 @@ index e3a82c8153..4478040334 100644
  
      # Some versions of Xcode 5 command line tools install gcc and g++ as symlinks to
 diff --git a/hotspot/make/bsd/makefiles/gcc.make b/hotspot/make/bsd/makefiles/gcc.make
-index 9571ad7ad9..8f1ebdb201 100644
+index 9571ad7ad9..dc67b26922 100644
 --- a/hotspot/make/bsd/makefiles/gcc.make
 +++ b/hotspot/make/bsd/makefiles/gcc.make
-@@ -363,7 +363,15 @@ ASFLAGS += -x assembler-with-cpp
+@@ -314,10 +314,8 @@ OPT_CFLAGS/NOOPT=-O0
+ 
+ # Work around some compiler bugs.
+ ifeq ($(USE_CLANG), true)
+-  ifeq ($(shell expr $(CC_VER_MAJOR) = 4 \& $(CC_VER_MINOR) = 2), 1)
+-    OPT_CFLAGS/loopTransform.o += $(OPT_CFLAGS/NOOPT)
+-    OPT_CFLAGS/unsafe.o += -O1
+-  endif
++  OPT_CFLAGS/loopTransform.o += $(OPT_CFLAGS/NOOPT)
++  OPT_CFLAGS/unsafe.o += -O1
+ else
+   # 6835796. Problem in GCC 4.3.0 with mulnode.o optimized compilation.
+   ifeq ($(shell expr $(CC_VER_MAJOR) = 4 \& $(CC_VER_MINOR) = 3), 1)
+@@ -363,7 +361,15 @@ ASFLAGS += -x assembler-with-cpp
  # Linker flags
  
  # statically link libstdc++.so, work with gcc but ignored by g++
@@ -550,6 +563,35 @@ index 27f5068f70..bb9584e7e5 100644
    u1* open_entry(const char* name, jint* filesize, bool nul_terminate, TRAPS);
    ClassFileStream* open_stream(const char* name, TRAPS);
    void set_meta_index(MetaIndex* meta_index) { _meta_index = meta_index; }
+diff --git a/hotspot/src/share/vm/memory/metaspaceShared.cpp b/hotspot/src/share/vm/memory/metaspaceShared.cpp
+index d5826d6e09..5e397a0707 100644
+--- a/hotspot/src/share/vm/memory/metaspaceShared.cpp
++++ b/hotspot/src/share/vm/memory/metaspaceShared.cpp
+@@ -723,12 +723,20 @@ void MetaspaceShared::preload_and_dump(TRAPS) {
+     int class_list_path_len = (int)strlen(class_list_path_str);
+     if (class_list_path_len >= 3) {
+       if (strcmp(class_list_path_str + class_list_path_len - 3, "lib") != 0) {
+-        strcat(class_list_path_str, os::file_separator());
+-        strcat(class_list_path_str, "lib");
++        if (class_list_path_len < JVM_MAXPATHLEN - 4) {
++          jio_snprintf(class_list_path_str + class_list_path_len,
++                       sizeof(class_list_path_str) - class_list_path_len,
++                       "%slib", os::file_separator());
++          class_list_path_len += 4;
++        }
+       }
+     }
+-    strcat(class_list_path_str, os::file_separator());
+-    strcat(class_list_path_str, "classlist");
++    class_list_path_len = (int)strlen(class_list_path_str);
++    if (class_list_path_len < JVM_MAXPATHLEN - 10) {
++      jio_snprintf(class_list_path_str + class_list_path_len,
++                   sizeof(class_list_path_str) - class_list_path_len,
++                   "%sclasslist", os::file_separator());
++    }
+     class_list_path = class_list_path_str;
+   } else {
+     class_list_path = SharedClassListFile;
 diff --git a/hotspot/src/share/vm/prims/jvmtiImpl.hpp b/hotspot/src/share/vm/prims/jvmtiImpl.hpp
 index c1e4b81b66..9f36f28fb9 100644
 --- a/hotspot/src/share/vm/prims/jvmtiImpl.hpp
