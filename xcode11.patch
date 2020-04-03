@@ -12,7 +12,7 @@ index 4ee9cdd193..1ab440e888 100644
    )
  
 diff --git a/common/autoconf/flags.m4 b/common/autoconf/flags.m4
-index fe0d9a436d..f2cf7d4a23 100644
+index fe0d9a436d..a8ac1f9cae 100644
 --- a/common/autoconf/flags.m4
 +++ b/common/autoconf/flags.m4
 @@ -159,6 +159,26 @@ AC_DEFUN_ONCE([FLAGS_SETUP_COMPILER_FLAGS_FOR_LIBS],
@@ -88,10 +88,11 @@ index fe0d9a436d..f2cf7d4a23 100644
      elif test "x$TOOLCHAIN_TYPE" = xxlc; then
        C_O_FLAG_HIGHEST="-O3"
        C_O_FLAG_HI="-O3 -qstrict"
-@@ -636,6 +681,22 @@ AC_DEFUN_ONCE([FLAGS_SETUP_COMPILER_FLAGS_FOR_JDK],
+@@ -635,6 +680,22 @@ AC_DEFUN_ONCE([FLAGS_SETUP_COMPILER_FLAGS_FOR_JDK],
+       # The expected format is X.Y.Z
        MACOSX_VERSION_MIN=10.7.0
        AC_SUBST(MACOSX_VERSION_MIN)
-     
++
 +      # The macro takes the version with no dots, ex: 1070
 +      # Let the flags variables get resolved in make for easier override on make
 +      # command line.
@@ -107,10 +108,9 @@ index fe0d9a436d..f2cf7d4a23 100644
 +      # The expected format is X.Y.Z
 +      MACOSX_VERSION_MIN=10.9.0
 +      AC_SUBST(MACOSX_VERSION_MIN)
-+
+     
        # The macro takes the version with no dots, ex: 1070
        # Let the flags variables get resolved in make for easier override on make
-       # command line.
 @@ -709,6 +770,23 @@ AC_DEFUN_ONCE([FLAGS_SETUP_COMPILER_FLAGS_FOR_JDK],
            LDFLAGS_JDK="${LDFLAGS_JDK} -Xlinker -O1"
          fi
@@ -371,10 +371,10 @@ index e3a82c8153..4478040334 100644
  
      # Some versions of Xcode 5 command line tools install gcc and g++ as symlinks to
 diff --git a/hotspot/make/bsd/makefiles/gcc.make b/hotspot/make/bsd/makefiles/gcc.make
-index 9571ad7ad9..dc67b26922 100644
+index 52885199c6..1d7c382b4d 100644
 --- a/hotspot/make/bsd/makefiles/gcc.make
 +++ b/hotspot/make/bsd/makefiles/gcc.make
-@@ -314,10 +314,8 @@ OPT_CFLAGS/NOOPT=-O0
+@@ -313,10 +313,8 @@ OPT_CFLAGS/NOOPT=-O0
  
  # Work around some compiler bugs.
  ifeq ($(USE_CLANG), true)
@@ -387,7 +387,7 @@ index 9571ad7ad9..dc67b26922 100644
  else
    # 6835796. Problem in GCC 4.3.0 with mulnode.o optimized compilation.
    ifeq ($(shell expr $(CC_VER_MAJOR) = 4 \& $(CC_VER_MINOR) = 3), 1)
-@@ -363,7 +361,15 @@ ASFLAGS += -x assembler-with-cpp
+@@ -362,7 +360,15 @@ ASFLAGS += -x assembler-with-cpp
  # Linker flags
  
  # statically link libstdc++.so, work with gcc but ignored by g++
@@ -420,32 +420,6 @@ index b5860bfd8d..5cfb899572 100644
  # DEBUG_BINARIES overrides everything, use full -g debug information
  ifeq ($(DEBUG_BINARIES), true)
    JSIG_DEBUG_CFLAGS = -g
-diff --git a/hotspot/src/cpu/x86/vm/c1_LIRGenerator_x86.cpp b/hotspot/src/cpu/x86/vm/c1_LIRGenerator_x86.cpp
-index 7f6b1d60ea..5eacb6b54d 100644
---- a/hotspot/src/cpu/x86/vm/c1_LIRGenerator_x86.cpp
-+++ b/hotspot/src/cpu/x86/vm/c1_LIRGenerator_x86.cpp
-@@ -233,8 +233,8 @@ void LIRGenerator::cmp_reg_mem(LIR_Condition condition, LIR_Opr reg, LIR_Opr bas
- }
- 
- 
--bool LIRGenerator::strength_reduce_multiply(LIR_Opr left, int c, LIR_Opr result, LIR_Opr tmp) {
--  if (tmp->is_valid()) {
-+bool LIRGenerator::strength_reduce_multiply(LIR_Opr left, jint c, LIR_Opr result, LIR_Opr tmp) {
-+  if (tmp->is_valid() && c > 0 && c < max_jint) {
-     if (is_power_of_2(c + 1)) {
-       __ move(left, tmp);
-       __ shift_left(left, log2_jint(c + 1), left);
-@@ -602,8 +602,8 @@ void LIRGenerator::do_ArithmeticOp_Int(ArithmeticOp* x) {
-       bool use_constant = false;
-       bool use_tmp = false;
-       if (right_arg->is_constant()) {
--        int iconst = right_arg->get_jint_constant();
--        if (iconst > 0) {
-+        jint iconst = right_arg->get_jint_constant();
-+        if (iconst > 0 && iconst < max_jint) {
-           if (is_power_of_2(iconst)) {
-             use_constant = true;
-           } else if (is_power_of_2(iconst - 1) || is_power_of_2(iconst + 1)) {
 diff --git a/hotspot/src/os/aix/vm/decoder_aix.hpp b/hotspot/src/os/aix/vm/decoder_aix.hpp
 index ac234c1ab0..dca2dad3eb 100644
 --- a/hotspot/src/os/aix/vm/decoder_aix.hpp
@@ -485,38 +459,6 @@ index 731b3a3f5d..533425d6d4 100644
  
    bool can_decode_C_frame_in_vm() const;
    bool demangle(const char* symbol, char *buf, int buflen);
-diff --git a/hotspot/src/share/vm/c1/c1_LIRGenerator.cpp b/hotspot/src/share/vm/c1/c1_LIRGenerator.cpp
-index 21cd08da9e..126f39942b 100644
---- a/hotspot/src/share/vm/c1/c1_LIRGenerator.cpp
-+++ b/hotspot/src/share/vm/c1/c1_LIRGenerator.cpp
-@@ -539,11 +539,11 @@ void LIRGenerator::arithmetic_op(Bytecodes::Code code, LIR_Opr result, LIR_Opr l
- 
-     case Bytecodes::_imul:
-       {
--        bool    did_strength_reduce = false;
-+        bool did_strength_reduce = false;
- 
-         if (right->is_constant()) {
--          int c = right->as_jint();
--          if (is_power_of_2(c)) {
-+          jint c = right->as_jint();
-+          if (c > 0 && is_power_of_2(c)) {
-             // do not need tmp here
-             __ shift_left(left_op, exact_log2(c), result_op);
-             did_strength_reduce = true;
-diff --git a/hotspot/src/share/vm/c1/c1_LIRGenerator.hpp b/hotspot/src/share/vm/c1/c1_LIRGenerator.hpp
-index 8312a4bb6f..1a749eae2a 100644
---- a/hotspot/src/share/vm/c1/c1_LIRGenerator.hpp
-+++ b/hotspot/src/share/vm/c1/c1_LIRGenerator.hpp
-@@ -308,7 +308,7 @@ class LIRGenerator: public InstructionVisitor, public BlockClosure {
-   // is_strictfp is only needed for mul and div (and only generates different code on i486)
-   void arithmetic_op(Bytecodes::Code code, LIR_Opr result, LIR_Opr left, LIR_Opr right, bool is_strictfp, LIR_Opr tmp, CodeEmitInfo* info = NULL);
-   // machine dependent.  returns true if it emitted code for the multiply
--  bool strength_reduce_multiply(LIR_Opr left, int constant, LIR_Opr result, LIR_Opr tmp);
-+  bool strength_reduce_multiply(LIR_Opr left, jint constant, LIR_Opr result, LIR_Opr tmp);
- 
-   void store_stack_parameter (LIR_Opr opr, ByteSize offset_from_sp_in_bytes);
- 
 diff --git a/hotspot/src/share/vm/classfile/classLoader.hpp b/hotspot/src/share/vm/classfile/classLoader.hpp
 index 27f5068f70..bb9584e7e5 100644
 --- a/hotspot/src/share/vm/classfile/classLoader.hpp
