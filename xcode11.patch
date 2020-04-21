@@ -12,10 +12,10 @@ index 4ee9cdd193..1ab440e888 100644
    )
  
 diff --git a/common/autoconf/flags.m4 b/common/autoconf/flags.m4
-index fe0d9a436d..a8ac1f9cae 100644
+index 077efa297c..29dac14c1b 100644
 --- a/common/autoconf/flags.m4
 +++ b/common/autoconf/flags.m4
-@@ -159,6 +159,26 @@ AC_DEFUN_ONCE([FLAGS_SETUP_COMPILER_FLAGS_FOR_LIBS],
+@@ -160,6 +160,26 @@ AC_DEFUN_ONCE([FLAGS_SETUP_COMPILER_FLAGS_FOR_LIBS],
      C_FLAG_REORDER=''
      CXX_FLAG_REORDER=''
  
@@ -42,7 +42,7 @@ index fe0d9a436d..a8ac1f9cae 100644
      if test "x$OPENJDK_TARGET_OS" = xmacosx; then
        # Linking is different on MacOSX
        SHARED_LIBRARY_FLAGS="-dynamiclib -compatibility_version 1.0.0 -current_version 1.0.0 $PICFLAG"
-@@ -268,6 +288,8 @@ AC_DEFUN_ONCE([FLAGS_SETUP_COMPILER_FLAGS_FOR_OPTIMIZATION],
+@@ -272,6 +292,8 @@ AC_DEFUN_ONCE([FLAGS_SETUP_COMPILER_FLAGS_FOR_OPTIMIZATION],
    # Generate make dependency files
    if test "x$TOOLCHAIN_TYPE" = xgcc; then
      C_FLAG_DEPS="-MMD -MF"
@@ -51,7 +51,7 @@ index fe0d9a436d..a8ac1f9cae 100644
    elif test "x$TOOLCHAIN_TYPE" = xsolstudio; then
      C_FLAG_DEPS="-xMMD -xMF"
    elif test "x$TOOLCHAIN_TYPE" = xxlc; then
-@@ -292,6 +314,15 @@ AC_DEFUN_ONCE([FLAGS_SETUP_COMPILER_FLAGS_FOR_OPTIMIZATION],
+@@ -296,6 +318,15 @@ AC_DEFUN_ONCE([FLAGS_SETUP_COMPILER_FLAGS_FOR_OPTIMIZATION],
        CXXFLAGS_DEBUG_SYMBOLS="-g"
      fi
      ASFLAGS_DEBUG_SYMBOLS="-g"
@@ -67,7 +67,7 @@ index fe0d9a436d..a8ac1f9cae 100644
    elif test "x$TOOLCHAIN_TYPE" = xsolstudio; then
      CFLAGS_DEBUG_SYMBOLS="-g -xs"
      CXXFLAGS_DEBUG_SYMBOLS="-g0 -xs"
-@@ -348,6 +379,20 @@ AC_DEFUN_ONCE([FLAGS_SETUP_COMPILER_FLAGS_FOR_OPTIMIZATION],
+@@ -352,6 +383,20 @@ AC_DEFUN_ONCE([FLAGS_SETUP_COMPILER_FLAGS_FOR_OPTIMIZATION],
          C_O_FLAG_NORM="-O2"
          C_O_FLAG_NONE="-O0"
        fi
@@ -88,7 +88,7 @@ index fe0d9a436d..a8ac1f9cae 100644
      elif test "x$TOOLCHAIN_TYPE" = xxlc; then
        C_O_FLAG_HIGHEST="-O3"
        C_O_FLAG_HI="-O3 -qstrict"
-@@ -635,6 +680,22 @@ AC_DEFUN_ONCE([FLAGS_SETUP_COMPILER_FLAGS_FOR_JDK],
+@@ -639,6 +684,22 @@ AC_DEFUN_ONCE([FLAGS_SETUP_COMPILER_FLAGS_FOR_JDK],
        # The expected format is X.Y.Z
        MACOSX_VERSION_MIN=10.7.0
        AC_SUBST(MACOSX_VERSION_MIN)
@@ -111,7 +111,7 @@ index fe0d9a436d..a8ac1f9cae 100644
      
        # The macro takes the version with no dots, ex: 1070
        # Let the flags variables get resolved in make for easier override on make
-@@ -709,6 +770,23 @@ AC_DEFUN_ONCE([FLAGS_SETUP_COMPILER_FLAGS_FOR_JDK],
+@@ -713,6 +774,23 @@ AC_DEFUN_ONCE([FLAGS_SETUP_COMPILER_FLAGS_FOR_JDK],
            LDFLAGS_JDK="${LDFLAGS_JDK} -Xlinker -O1"
          fi
        fi
@@ -136,7 +136,7 @@ index fe0d9a436d..a8ac1f9cae 100644
  
      if test "x$TOOLCHAIN_TYPE" = xsolstudio; then
 diff --git a/common/autoconf/generated-configure.sh b/common/autoconf/generated-configure.sh
-index 20f52aaffb..90803eb863 100644
+index dce84df5b7..c54ddfe103 100644
 --- a/common/autoconf/generated-configure.sh
 +++ b/common/autoconf/generated-configure.sh
 @@ -1895,8 +1895,8 @@ Optional Packages:
@@ -179,7 +179,7 @@ index 20f52aaffb..90803eb863 100644
      fi
  
      # Some versions of Xcode 5 command line tools install gcc and g++ as symlinks to
-@@ -41269,6 +41271,26 @@ $as_echo "$ac_cv_c_bigendian" >&6; }
+@@ -41270,6 +41272,26 @@ $as_echo "$ac_cv_c_bigendian" >&6; }
      C_FLAG_REORDER=''
      CXX_FLAG_REORDER=''
  
@@ -206,7 +206,7 @@ index 20f52aaffb..90803eb863 100644
      if test "x$OPENJDK_TARGET_OS" = xmacosx; then
        # Linking is different on MacOSX
        SHARED_LIBRARY_FLAGS="-dynamiclib -compatibility_version 1.0.0 -current_version 1.0.0 $PICFLAG"
-@@ -41345,6 +41367,8 @@ $as_echo "$ac_cv_c_bigendian" >&6; }
+@@ -41349,6 +41371,8 @@ $as_echo "$ac_cv_c_bigendian" >&6; }
    # Generate make dependency files
    if test "x$TOOLCHAIN_TYPE" = xgcc; then
      C_FLAG_DEPS="-MMD -MF"
@@ -215,7 +215,7 @@ index 20f52aaffb..90803eb863 100644
    elif test "x$TOOLCHAIN_TYPE" = xsolstudio; then
      C_FLAG_DEPS="-xMMD -xMF"
    elif test "x$TOOLCHAIN_TYPE" = xxlc; then
-@@ -41369,6 +41393,15 @@ $as_echo "$ac_cv_c_bigendian" >&6; }
+@@ -41373,6 +41397,15 @@ $as_echo "$ac_cv_c_bigendian" >&6; }
        CXXFLAGS_DEBUG_SYMBOLS="-g"
      fi
      ASFLAGS_DEBUG_SYMBOLS="-g"
@@ -231,7 +231,7 @@ index 20f52aaffb..90803eb863 100644
    elif test "x$TOOLCHAIN_TYPE" = xsolstudio; then
      CFLAGS_DEBUG_SYMBOLS="-g -xs"
      CXXFLAGS_DEBUG_SYMBOLS="-g0 -xs"
-@@ -41425,6 +41458,20 @@ $as_echo "$ac_cv_c_bigendian" >&6; }
+@@ -41429,6 +41462,20 @@ $as_echo "$ac_cv_c_bigendian" >&6; }
          C_O_FLAG_NORM="-O2"
          C_O_FLAG_NONE="-O0"
        fi
@@ -252,7 +252,7 @@ index 20f52aaffb..90803eb863 100644
      elif test "x$TOOLCHAIN_TYPE" = xxlc; then
        C_O_FLAG_HIGHEST="-O3"
        C_O_FLAG_HI="-O3 -qstrict"
-@@ -42096,6 +42143,22 @@ $as_echo "$supports" >&6; }
+@@ -42100,6 +42147,22 @@ $as_echo "$supports" >&6; }
        MACOSX_VERSION_MIN=10.7.0
  
  
@@ -275,7 +275,7 @@ index 20f52aaffb..90803eb863 100644
        # The macro takes the version with no dots, ex: 1070
        # Let the flags variables get resolved in make for easier override on make
        # command line.
-@@ -42169,6 +42232,23 @@ $as_echo "$supports" >&6; }
+@@ -42173,6 +42236,23 @@ $as_echo "$supports" >&6; }
            LDFLAGS_JDK="${LDFLAGS_JDK} -Xlinker -O1"
          fi
        fi
@@ -299,7 +299,7 @@ index 20f52aaffb..90803eb863 100644
      fi
  
      if test "x$TOOLCHAIN_TYPE" = xsolstudio; then
-@@ -48820,8 +48900,12 @@ fi
+@@ -48831,8 +48911,12 @@ fi
    fi
  
    # TODO better (platform agnostic) test
@@ -593,6 +593,31 @@ index f0d3372a9b..e92c958820 100644
  
    bool can_decode_C_frame_in_vm() const { return true; }
  
+diff --git a/jdk/make/Bundles.gmk b/jdk/make/Bundles.gmk
+index 15538f0a11..555d7bbab4 100644
+--- a/jdk/make/Bundles.gmk
++++ b/jdk/make/Bundles.gmk
+@@ -89,16 +89,16 @@ ifeq ($(OPENJDK_TARGET_OS), macosx)
+ 	if [ -d "$<" ]; then $(MKDIR) -p $@; else $(CP) -f -R -L '$<' '$@'; fi
+ 
+   $(JDK_BUNDLE_DIR)/MacOS/libjli.dylib:
+-	$(ECHO) Creating link $(patsubst $(OUTPUT_ROOT)/%,%,$@)
++	$(ECHO) Copying $(patsubst $(OUTPUT_ROOT)/%,%,$@)
+ 	$(MKDIR) -p $(@D)
+ 	$(RM) $@
+-	$(LN) -s ../Home/jre/lib/jli/libjli.dylib $@
++	$(CP) $(JDK_IMAGE_DIR)/jre/lib/jli/libjli.dylib $@
+ 
+   $(JRE_BUNDLE_DIR)/MacOS/libjli.dylib:
+-	$(ECHO) Creating link $(patsubst $(OUTPUT_ROOT)/%,%,$@)
++	$(ECHO) Copying $(patsubst $(OUTPUT_ROOT)/%,%,$@)
+ 	$(MKDIR) -p $(@D)
+ 	$(RM) $@
+-	$(LN) -s ../Home/lib/jli/libjli.dylib $@
++	$(CP) $(JRE_IMAGE_DIR)/lib/jli/libjli.dylib $@
+ 
+   $(JDK_BUNDLE_DIR)/Info.plist: $(SPEC)
+ 	$(ECHO) Creating $(patsubst $(OUTPUT_ROOT)/%,%,$@)
 diff --git a/jdk/make/lib/CoreLibraries.gmk b/jdk/make/lib/CoreLibraries.gmk
 index c8e4815e11..7667cc9914 100644
 --- a/jdk/make/lib/CoreLibraries.gmk
@@ -623,6 +648,43 @@ index c8e4815e11..7667cc9914 100644
        OBJECT_DIR := $(JDK_OUTPUTDIR)/objs/libjli_static, \
        DEBUG_SYMBOLS := $(DEBUG_ALL_BINARIES)))
  
+diff --git a/jdk/src/macosx/bin/java_md_macosx.c b/jdk/src/macosx/bin/java_md_macosx.c
+index eb20be7726..898ca71e51 100644
+--- a/jdk/src/macosx/bin/java_md_macosx.c
++++ b/jdk/src/macosx/bin/java_md_macosx.c
+@@ -651,11 +651,31 @@ GetJREPath(char *path, jint pathsize, const char * arch, jboolean speculative)
+     }
+ 
+     size_t indexOfLastPathComponent = pathLen - sizeOfLastPathComponent;
+-    if (0 == strncmp(realPathToSelf + indexOfLastPathComponent, lastPathComponent, sizeOfLastPathComponent - 1)) {
++    if (0 == strncmp(realPathToSelf + indexOfLastPathComponent, lastPathComponent, sizeOfLastPathComponent)) {
+         realPathToSelf[indexOfLastPathComponent + 1] = '\0';
+         return JNI_TRUE;
+     }
+ 
++    // If libjli.dylib is loaded from a macos bundle MacOS dir, find the JRE dir
++    // in ../Home.
++    const char altLastPathComponent[] = "/MacOS/libjli.dylib";
++    size_t sizeOfAltLastPathComponent = sizeof(altLastPathComponent) - 1;
++    if (pathLen < sizeOfLastPathComponent) {
++        return JNI_FALSE;
++    }
++
++    size_t indexOfAltLastPathComponent = pathLen - sizeOfAltLastPathComponent;
++    if (0 == strncmp(realPathToSelf + indexOfAltLastPathComponent, altLastPathComponent, sizeOfAltLastPathComponent)) {
++        JLI_Snprintf(realPathToSelf + indexOfAltLastPathComponent, sizeOfAltLastPathComponent, "%s", "/Home/jre");
++        if (access(realPathToSelf, F_OK) == 0) {
++            return JNI_TRUE;
++        }
++        JLI_Snprintf(realPathToSelf + indexOfAltLastPathComponent, sizeOfAltLastPathComponent, "%s", "/Home");
++        if (access(realPathToSelf, F_OK) == 0) {
++            return JNI_TRUE;
++        }
++    }
++
+     if (!speculative)
+       JLI_ReportErrorMessage(JRE_ERROR8 JAVA_DLL);
+     return JNI_FALSE;
 diff --git a/jdk/src/macosx/native/sun/osxapp/ThreadUtilities.m b/jdk/src/macosx/native/sun/osxapp/ThreadUtilities.m
 index 7458431010..c1ce39b830 100644
 --- a/jdk/src/macosx/native/sun/osxapp/ThreadUtilities.m
